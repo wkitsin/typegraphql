@@ -12,19 +12,11 @@ export class RegisterResolver {
   }
 
   @Mutation(() => User)
-  async register(@Arg("data")
-  {
-    firstName,
-    lastName,
-    email,
-    password
-  }: RegisterInput): Promise<User> {
-    const hashedPassword = await bcrypt.hash(password, 12);
+  async register(@Arg("data") registerInput: RegisterInput): Promise<User> {
+    const hashedPassword = await bcrypt.hash(registerInput.password, 12);
 
     const user = await User.create({
-      firstName,
-      lastName,
-      email,
+      ...registerInput,
       password: hashedPassword
     }).save();
 
